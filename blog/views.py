@@ -11,3 +11,12 @@ def blog_single(request, pid):
     post = get_object_or_404(posts, pk = pid)
     context = {"post" : post}
     return render(request, 'blog/blog-single.html', context)
+
+def test(request):
+    return render(request,"test.html")
+
+def blog_category(request,cat_name):
+    posts = Post.objects.filter(status=True)
+    posts = posts.filter(category__name=cat_name)
+    context = {'posts' : posts}
+    return render(request, "blog/blog-home.html", context)
