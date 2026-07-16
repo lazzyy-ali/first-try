@@ -9,15 +9,8 @@
 <body>
     <form action="{% url 'website:test' %}" method="post">
         {% csrf_token %}
-        <label>Name</label>
-        <input name="name" type="text"><br>
-        <label>Email</label>
-        <input name="email" type="text"><br>
-        <label>Subject</label>
-        <input name="subject" type="text"><br>
-        <label>Message</label>
-        <input name="message" type="text"><br>
-        <button type="submit">Submit</button>
+        {{ form.as_p }}
+        <button type+= 'submit'>submit</button>
     </form>
 </body>
 </html>
