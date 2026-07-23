@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
-from blog.models import Post
+from blog.models import Post,Comments
+from django.contrib import messages
 from django.core.paginator import Paginator,PageNotAnInteger,EmptyPage
+from blog.forms import CommentForm
 # Create your views here.
 def blog_view(request, **kwargs):
     posts = Post.objects.filter(status=True)
@@ -12,6 +14,8 @@ def blog_view(request, **kwargs):
     author_username = kwargs.get('author_username')
     if author_username:
         posts = posts.filter(author__username=author_username)
+    if kwargs.get('tag_name') != None:
+        posts = posts.filter(tags__name__in=[kwargs["tag_name"]])
 
     posts = Paginator(posts, 3)
     try:
@@ -27,9 +31,28 @@ def blog_view(request, **kwargs):
 
 def blog_single(request, pid):
     posts = Post.objects.filter(status=True)
-    post = get_object_or_404(posts, pk = pid)
-    context = {"post" : post}
-    return render(request, 'blog/blog-single.html', context)
+    post = get_object_or_404(posts, pk=pid)
+
+    comments = Comments.objects.filter(
+        post=post,
+        approved=True
+    ).order_by("created_date")
+
+    if request.method == "POST":
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()    
+                 
+            messages.success(request, "Your comment has been submitted successfully.")
+        else:
+            messages.error(request, "Your comment could not be submitted.")
+    else:
+        form = CommentForm()
+    print(form.errors)
+    context = {"post": post,"comments": comments,"form": form,}
+    return render(request, "blog/blog-single.html", context)
 
 def test(request):
     return render(request,"test.html")
@@ -48,3 +71,9 @@ def search_view(request):
     
     context = {'posts': posts}
     return render(request, "blog/blog-home.html", context)
+
+
+'''
+posts = posts.filter(tags__name_in=[kwargs["tag_name"]])
+posts = posts.filter(tags__name__in=[kwargs["tag_name"]])
+'''

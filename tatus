@@ -1,0 +1,10 @@
+[33mffe741f[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Add contact forms, sitemap, robots.txt and improve blog features
+[33m3702194[m Add search, contact form, pagination, and blog improvements
+[33m514f9a4[m Added custom template tags and dynamic blog sidebar components.
+[33m2ae9b29[m Enhance blog rendering with dynamic templates
+[33m4ae7646[m feat: implement blog models and integrate database with views
+[33mb006f19[m feat: implement Contact and Post models
+[33md03fe14[m edit
+[33mefc486d[m set templates
+[33m5053369[m added static directory and urls in settings
+[33mbef1d26[m added general templates folder
